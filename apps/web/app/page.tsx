@@ -1,6 +1,15 @@
 "use client";
-import React, { useState } from 'react'
-import { Heart, User, Briefcase, Coffee, Wine, Cigarette, Users, ChevronLeft } from "lucide-react"
+import React, { useState } from 'react';
+
+import {
+  ChevronLeft,
+  Cigarette,
+  Coffee,
+  Heart,
+  User,
+  Users,
+  Wine,
+} from 'lucide-react';
 
 export default function Component() {
   const [showAnalysis, setShowAnalysis] = useState(false)
@@ -11,6 +20,9 @@ export default function Component() {
     me: "Code wizard by profession, adventure seeker by passion. Looking for a partner in crime to explore life's mysteries and create lasting memories. If you're ambitious, kind-hearted, and enjoy both quiet nights in and spontaneous adventures, let's connect and see where our journey takes us.\n\nI find beauty in elegant code and efficiency in well-designed systems. My work is my passion, but I know how to unplug and enjoy life beyond the screen. I'm equally comfortable debugging a complex algorithm or strumming my guitar around a campfire under the stars.\n\nIdeal match? Someone who appreciates intellectual discussions, shares my love for both technology and nature, and isn't afraid to dream big. If you're up for coding marathons followed by actual marathons, we might just be a perfect match!"
   })
 
+  const [topics, setTopics] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
   const cards = [
     { title: "Shared, go deep", topic: "Fashion", type: "shared" },
     { title: "Find out", topic: "Having kids", type: "find" },
@@ -19,8 +31,36 @@ export default function Component() {
     { title: "Find out", topic: "Which cuisines do you share?", type: "find" }
   ]
 
+  const fetchTopics = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/topics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userProfiles: [profileContent.them, profileContent.me],
+          alreadySuggestedTopics: topics,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch topics');
+      }
+
+      const data = await response.json();
+      setTopics((prevTopics) => [...prevTopics, ...data.topics]);
+    } catch (error) {
+      console.error('Error fetching topics:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleAnalyze = () => {
     setShowAnalysis(true)
+    fetchTopics()
   }
 
   const handleNewProfiles = () => {
@@ -32,7 +72,7 @@ export default function Component() {
     setShowTextareas(false)
   }
 
-  const ProfileCard = ({ title, content, tags }) => (
+  const ProfileCard = ({ title, content, tags }: any) => (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-3 flex items-center"><User className="mr-2" size={24} /> {title}</h2>
@@ -128,16 +168,19 @@ export default function Component() {
               <Users size={48} className="mx-auto mb-4" />
               <p className="text-xl">I'll analyze the things you share and things you need to discuss</p>
             </div>
+          ) : isLoading ? (
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center">
+              <p className="text-xl">Loading topics...</p>
+            </div>
           ) : (
-            cards.map((card, index) => (
+            topics.map((topic, index) => (
               <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105">
-                <div className={`p-6 text-center ${
-                  card.type === 'shared' 
-                    ? 'bg-gradient-to-br from-pink-100 to-purple-100' 
-                    : 'bg-gradient-to-br from-blue-100 to-cyan-100'
-                }`}>
-                  <p className="text-2xl font-bold mb-2">{card.title}</p>
-                  <p className="text-lg text-gray-600">{card.topic}</p>
+                <div className={`p-6 text-center ${topic.type === 'shared'
+                  ? 'bg-gradient-to-br from-pink-100 to-purple-100'
+                  : 'bg-gradient-to-br from-blue-100 to-cyan-100'
+                  }`}>
+                  <p className="text-2xl font-bold mb-2">{topic.title}</p>
+                  <p className="text-lg text-gray-600">{topic.content}</p>
                 </div>
               </div>
             ))
@@ -145,8 +188,9 @@ export default function Component() {
           <button
             onClick={handleAnalyze}
             className="w-full px-6 py-3 bg-red-600 text-white rounded-full text-lg font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+            disabled={isLoading}
           >
-            <Heart className="mr-2" size={20} /> Give ideas to talk about
+            <Heart className="mr-2" size={20} /> {isLoading ? 'Loading...' : 'Give ideas to talk about'}
           </button>
         </div>
       </div>
