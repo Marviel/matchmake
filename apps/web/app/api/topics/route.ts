@@ -14,7 +14,7 @@ const InputSchema = z.object({
 // Define the output schema
 const OutputSchema = z.object({
     topics: z.array(z.object({
-        type: z.enum(['find-out', 'shared-go-deeper', 'find-tension']),
+        type: z.enum(['find-out', 'shared-go-deeper', 'navigate-tension']),
         content: z.string(),
     })),
 });
@@ -51,6 +51,18 @@ async function generateTopics(
             
             Each topic should have a type of either "find-out", "shared-go-deeper", or "find-tension".
             Return the result as a JSON object with a "topics" array containing objects with "type" and "content" properties.
+
+            <TypeExplanations>
+                <TypeExplanation type="find-out">
+                    This is meant for things which are appealing to one person, but where it's not clear if the other person will find it appealing.
+                </TypeExplanation>
+                <TypeExplanation type="shared-go-deeper">
+                    The topic is about exploring shared interests or experiences in more depth.
+                </TypeExplanation>
+                <TypeExplanation type="navigate-tension">
+                    The topic is about exploring possible tensions or conflict between the user's profiles.
+                </TypeExplanation>
+            </TypeExplanations>
         `;
 
         const response = await openai.chat.completions.create({
