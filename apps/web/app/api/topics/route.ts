@@ -11,10 +11,11 @@ const InputSchema = z.object({
     })),
 });
 
-// Define the output schema
+// Update the OutputSchema
 const OutputSchema = z.object({
     topics: z.array(z.object({
         type: z.enum(['find-out', 'shared-go-deeper', 'navigate-tension']),
+        title: z.string(),
         content: z.string(),
     })),
 });
@@ -49,8 +50,9 @@ async function generateTopics(
             User Profiles: ${JSON.stringify(userProfiles)}
             Already Suggested Topics: ${JSON.stringify(alreadySuggestedTopics)}
             
-            Each topic should have a type of either "find-out", "shared-go-deeper", or "find-tension".
-            Return the result as a JSON object with a "topics" array containing objects with "type" and "content" properties.
+            Each topic should have a type of either "find-out", "shared-go-deeper", or "navigate-tension".
+            Also, include a catchy title for each topic.
+            Return the result as a JSON object with a "topics" array containing objects with "type", "title", and "content" properties.
 
             <TypeExplanations>
                 <TypeExplanation type="find-out">
