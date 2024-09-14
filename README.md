@@ -1,6 +1,6 @@
 # Getting Started
 
-
+- fill out `.env.example` and move to `apps/web/.env.local`
 - `npm i`
 - `npm run dev`
 
