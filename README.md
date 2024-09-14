@@ -1,3 +1,46 @@
+# Getting Started
+
+
+- `npm i`
+- `npm run dev`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Turborepo starter
 
 This is an official starter Turborepo.
