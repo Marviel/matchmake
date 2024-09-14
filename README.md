@@ -7,6 +7,57 @@
 
 
 
+# API Routes
+
+## /api/topics
+
+Input:
+
+```json
+{
+    // All elements in this array will be stringified, if they aren't already strings.
+    "userProfiles": [
+        {
+            "name": "John Doe",
+            "age": 30,
+            "gender": "male",
+            "location": "New York",
+            "interests": ["reading", "traveling", "cooking"]
+        },
+        {
+            "name": "Jane Smith",
+            "age": 25,
+            "gender": "female",
+            "location": "London",
+            "interests": ["photography", "music", "art"]
+        }
+    ],
+    "alreadySuggestedTopics": [
+        {
+            "type": "find-out",
+            "content": "What is your favorite book?"
+        },
+    ]
+}
+```
+
+
+Output:
+
+```json
+{
+    "topics": [
+        {
+            "type": "shared-go-deeper",
+            "content": "What is your favorite movie?"
+        },
+        {
+            "type": "find-tension",
+            "content": "What is your biggest fear?"
+        }
+    ]
+}
+```
 
 
 
