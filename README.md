@@ -5,8 +5,6 @@
 - `npm run dev`
 
 
-
-
 # API Routes
 
 ## /api/topics
@@ -40,7 +38,6 @@ Input:
     ]
 }
 ```
-
 
 Output:
 
