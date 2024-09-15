@@ -179,6 +179,7 @@ export default function MainApp({
                   className="w-full h-64 p-2 border rounded-md"
                   value={profileContent.them.body}
                   onChange={(e) => handleProfileChange('them', e.target.value)}
+                  placeholder='Paste their profile here...'
                 />
               </div>
               <div className="space-y-4">
@@ -188,6 +189,7 @@ export default function MainApp({
                   className="w-full h-64 p-2 border rounded-md"
                   value={profileContent.me.body}
                   onChange={(e) => handleProfileChange('me', e.target.value)}
+                  placeholder='Paste your dating profile here from Tinder, Bumble, etc...'
                 />
               </div>
               <button
