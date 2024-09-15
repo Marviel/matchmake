@@ -4,6 +4,7 @@ import {
     AlertTriangle,
     Search,
     Share2,
+    Sparkles,
 } from 'lucide-react';
 
 const typeIcons = {
@@ -22,6 +23,7 @@ interface TopicCardProps {
     topic: {
         type: 'find-out' | 'shared-go-deeper' | 'navigate-tension';
         content: string;
+        origin?: 'live';
     };
     onSwipe?: () => void;
 }
@@ -49,6 +51,11 @@ const TopicCard: React.FC<TopicCardProps> = ({ topic, onSwipe }) => {
                 }`}>
                 <h3 className="text-sm text-gray-600">{typeLabel}</h3>
                 <p className="text-xl font-bold mb-2 text-black">{topic.content}</p>
+                {topic.origin === 'live' && (
+                    <div className="absolute top-2 right-2 text-yellow-500">
+                        <Sparkles size={20} />
+                    </div>
+                )}
             </div>
         </div>
     );

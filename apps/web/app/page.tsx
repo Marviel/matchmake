@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
+import { trimLines } from '@lukebechtel/lab-ts-utils';
+
 import LivePage from './LivePage';
 import MainApp from './MainPage';
 
@@ -23,7 +25,7 @@ export default function Page() {
     them: {
       name: "Richard",
       avatar: "/greg.jpg",
-      body: `
+      body: trimLines(`
           I very much want a life partner who orients towards the world in a similar way as I do. I'm writing this document in the hope of finding her; please share it with women you think might be a good match. I'm male, 29, living in San Francisco, working in AI, uncertain about having kids (but probably persuadable by the right person). I'm open to going on dates with people who live elsewhere, but have trouble seeing myself living outside a global hub (like the Bay Area, NYC, London, etc) in the long term.
           Here are five of my defining traits; I'd love to find a partner who shares them with me. If they resonate with you, fill in this form or reach out directly.
           Growth
@@ -64,7 +66,7 @@ export default function Page() {
           😉
     
           If you think we could be a good match (or you have a friend who might be), fill in my form, email me at richardcngo@gmail.com, tweet at me, tell a mutual friend to arrange a rendezvous, throw pebbles at my window, write me a song, or send me a document like this of your own! (If you're not sure what to say, tell me about a favorite book or song, or something you're looking forward to over the coming year.) If you're uncertain, please do err on the side of getting in touch - writing is much lower-bandwidth for discovering compatibility than meeting in person, and the heavy-tailed outcomes here are skewed very positively!
-        `,
+        `),
       interests: "Hiking, photography, trying new restaurants",
       badges: [
         { text: "No kids", icon: null },
@@ -74,7 +76,7 @@ export default function Page() {
     me: {
       name: "Tati",
       avatar: "/tati.jpg",
-      body: `
+      body: trimLines(`
         🌈 Tati's Technicolor Dream Profile 🌈
   
         📊 The Basics:
@@ -105,7 +107,7 @@ export default function Page() {
         🎵 Playlist: "Jazzy Beats to Contemplate the Universe To"
   
         If you're into intellectual chats, creative shenanigans, and don't mind someone who occasionally talks to plants, let's connect! Bonus points if you can keep up with my globe-trotting stories and avant-garde art references. Ready to paint the town in all colors of the spectrum? 🎨✨
-        `,
+        `),
       interests: "Traveling, coding, playing guitar",
       badges: [
         { text: "Wants kids", icon: null },
@@ -169,7 +171,14 @@ export default function Page() {
       }
 
       const data = await response.json();
-      setTopics((prevTopics) => [...prevTopics, ...data.topics]);
+      setTopics((prevTopics) => [
+        ...prevTopics,
+        // Add live indicator to each topic
+        ...data.topics.map((topic: any) => ({
+          ...topic,
+          origin: useTranscript ? "live" : undefined
+        }))
+      ]);
     } catch (error) {
       console.error('Error fetching topics:', error);
     } finally {
