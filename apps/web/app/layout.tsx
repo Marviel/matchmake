@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 import { Open_Sans } from 'next/font/google';
 const openSans = Open_Sans({
-  // subsets: ['latin'],
+  subsets: ['latin']
   // weights: ['400', '700'], // Include weights as needed
 });
 
