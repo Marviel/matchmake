@@ -32,6 +32,7 @@ export async function POST(request: Request) {
         const transcription = await openai.audio.transcriptions.create({
             file: require('fs').createReadStream(tempFilePath),
             model: 'whisper-1',
+            language: 'en'
         });
 
         // Delete the temporary file
