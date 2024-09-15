@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
   AlertTriangle,
@@ -108,7 +108,7 @@ const TopicCard = ({ topic }: { topic: any }) => {
 
   const typeLabels = {
     'find-out': 'Find Out',
-    'shared-go-deeper': 'Shared; Dig Deeper',
+    'shared-go-deeper': 'Shared, Go Deeper',
     'navigate-tension': 'Navigate Tension',
   };
 
@@ -116,19 +116,25 @@ const TopicCard = ({ topic }: { topic: any }) => {
   const typeLabel = typeLabels[topic.type as keyof typeof typeLabels];
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 relative">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all hover:scale-105 relative text-center	">
       <div className={`p-6 ${topic.type === 'shared-go-deeper'
         ? 'bg-gradient-to-br from-pink-100 to-purple-100'
         : topic.type === 'find-out'
           ? 'bg-gradient-to-br from-blue-100 to-cyan-100'
           : 'bg-gradient-to-br from-yellow-100 to-orange-100'
         }`}>
-        <div className="absolute top-2 right-2 bg-white rounded-full py-1 px-2 flex items-center space-x-1">
+        {/* <div className="absolute top-2 right-2 bg-white rounded-full py-1 px-2 flex items-center space-x-1">
           <TypeIcon size={16} className="text-gray-600" />
-          <span className="text-xs font-medium text-gray-600">{typeLabel}</span>
-        </div>
-        <h3 className="text-xl font-bold mb-2 text-black">{topic.title}</h3>
-        <p className="text-sm text-black">{topic.content}</p>
+          <span className="text-xs font-medium text-gray-600">
+          </span>
+        </div> */}
+        <h3 className="text-sm text-gray-600">
+          {/* {topic.title} */}
+          {typeLabel}
+        </h3>
+        <p className="text-xl font-bold mb-2 text-black">
+          {topic.content}
+        </p>
       </div>
     </div>
   );
