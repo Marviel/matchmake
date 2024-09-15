@@ -86,7 +86,7 @@ async function generateTopics(
         `;
 
         const response = await openai.beta.chat.completions.parse({
-            model: "gpt-4o",
+            model: "gpt-4o-2024-08-06",
             messages: [
                 { role: "system", content: "You are a helpful assistant that generates conversation topics for dates." },
                 { role: "user", content: prompt }
