@@ -27,7 +27,7 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const chunksRef = useRef<Blob[]>([]);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const [currentTopicIndex, setCurrentTopicIndex] = useState(0);
+    const [seenTopics, setSeenTopics] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -110,16 +110,21 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
         onTranscriptUpdate(result);
     }, [result, onTranscriptUpdate]);
 
+    const filteredTopics = topics.filter(topic => !seenTopics.has(topic.content));
+
     const handleSwipe = () => {
-        if (currentTopicIndex < topics.length - 1) {
-            setCurrentTopicIndex(currentTopicIndex + 1);
+        if (filteredTopics.length > 0) {
+            const removedTopic = filteredTopics[0];
+            setSeenTopics(prev => new Set(prev).add(removedTopic.content));
         }
     };
 
     return (
         <div className="container mx-auto p-4 text-black">
             <div className="flex flex-col items-center mb-8">
-                <RecordButton isRecording={isListening} onClick={isListening ? stopListening : startListening} />
+                <div className="w-40 h-40 flex items-center justify-center">
+                    <RecordButton isRecording={isListening} onClick={isListening ? stopListening : startListening} />
+                </div>
                 <p className="mt-4 text-lg font-semibold">
                     {isListening ? 'Listening...' : 'Click to start recording'}
                 </p>
@@ -133,14 +138,17 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
                 </div>
                 <div className="space-y-4">
                     <h3 className="text-xl font-bold mb-4">Suggested Topics:</h3>
-                    {isLoading ? (
-                        <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center">
-                            <p className="text-xl text-black">Loading topics...</p>
-                        </div>
+                    {filteredTopics.length > 0 ? (
+                        <TopicCard topic={filteredTopics[0]} onSwipe={handleSwipe} />
                     ) : (
-                        topics.slice(currentTopicIndex).map((topic, index) => (
-                            <TopicCard key={index} topic={topic} onSwipe={handleSwipe} />
-                        ))
+                        <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center">
+                            <p className="text-xl text-black">No more topics</p>
+                        </div>
+                    )}
+                    {isLoading && (
+                        <div className="text-center">
+                            <p className="text-lg text-gray-600">Loading more topics...</p>
+                        </div>
                     )}
                     <button
                         onClick={() => {/* Add functionality to generate new topics */ }}
