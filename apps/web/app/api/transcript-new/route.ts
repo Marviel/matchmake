@@ -52,7 +52,8 @@ async function convertAudioToText(openai: OpenAI, audioData: any) {
     // Transcribe the audio
     const response = await openai.audio.transcriptions.create({
         file: fs.createReadStream(outputPath),
-        model: 'whisper-1'
+        model: 'whisper-1',
+        language: 'en'
     });
 
     // Delete the temporary file
