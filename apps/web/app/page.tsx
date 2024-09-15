@@ -108,7 +108,7 @@ export default function Component() {
   const [profileContent, setProfileContent] = useState({
     them: {
       name: "Amber",
-      avatar: "/placeholder-avatar.png", // Add this image to your public folder
+      avatar: "/greg.jpg", // Add this image to your public folder
       body: `
       🌟 Amber's Adventure Almanac 🌟
 
@@ -142,7 +142,7 @@ export default function Component() {
     },
     me: {
       name: "Tati",
-      avatar: "/placeholder-avatar.png", // Add this image to your public folder
+      avatar: "/tati.jpeg",
       body: `
       🌈 Tati's Technicolor Dream Profile 🌈
 
