@@ -1,5 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   AlertTriangle,
@@ -144,15 +148,16 @@ interface MainAppProps {
   showAnalysis: boolean;
   showTextareas: boolean;
   profileContent: {
-    them: { name: string; avatar: string; body: string };
-    me: { name: string; avatar: string; body: string };
+    them: { name: string; avatar: string; body: string; interests: string; badges: { text: string; icon: any }[] };
+    me: { name: string; avatar: string; body: string; interests: string; badges: { text: string; icon: any }[] };
   };
   topics: { title: string; content: string; type: 'shared-go-deeper' | 'find-out' | 'navigate-tension' }[];
   isLoading: boolean;
   handleAnalyze: () => void;
   handleNewProfiles: () => void;
   handleSaveProfiles: () => void;
-  handleProfileChange: (person: 'them' | 'me', newBody: string) => void;
+  handleProfileChange: (person: 'them' | 'me', field: 'body' | 'interests', newValue: string) => void;
+  handleBadgeChange: (person: 'them' | 'me', index: number, newBadge: { text: string, icon: any }) => void;
 }
 
 export default function MainApp({
@@ -164,7 +169,8 @@ export default function MainApp({
   handleAnalyze,
   handleNewProfiles,
   handleSaveProfiles,
-  handleProfileChange
+  handleProfileChange,
+  handleBadgeChange
 }: MainAppProps) {
   return (
     <div className="container mx-auto p-4 text-black">
@@ -178,7 +184,7 @@ export default function MainApp({
                   id="them-profile"
                   className="w-full h-64 p-2 border rounded-md"
                   value={profileContent.them.body}
-                  onChange={(e) => handleProfileChange('them', e.target.value)}
+                  onChange={(e) => handleProfileChange('them', 'body', e.target.value)}
                   placeholder='Paste their profile here...'
                 />
               </div>
@@ -188,7 +194,7 @@ export default function MainApp({
                   id="my-profile"
                   className="w-full h-64 p-2 border rounded-md"
                   value={profileContent.me.body}
-                  onChange={(e) => handleProfileChange('me', e.target.value)}
+                  onChange={(e) => handleProfileChange('me', 'body', e.target.value)}
                   placeholder='Paste your dating profile here from Tinder, Bumble, etc...'
                 />
               </div>
