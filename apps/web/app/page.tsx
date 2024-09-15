@@ -154,7 +154,7 @@ If this resonates with you, I'd love to connect!        `),
       const data = await response.json();
       setTopics((prevTopics) => [
         ...prevTopics,
-        // Add live indicator to each topic
+        // Add live indicator to each topic.
         ...data.topics.map((topic: any) => ({
           ...topic,
           origin: useTranscript ? "live" : undefined

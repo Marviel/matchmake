@@ -57,9 +57,18 @@ async function generateTopicsFromTranscript(
             You are an insightful and empathetic matchmaker. Your task is to analyze a conversation transcript, two dating profiles, and existing suggested topics to generate new personalized conversation tips. The output should be in JSON format, providing tailored advice for the conversation.
 
             Given the following:
-            Transcript: ${transcript}
-            User Profiles: ${JSON.stringify(userProfiles)}
-            Existing Suggested Topics: ${JSON.stringify(existingSuggestedTopics)}
+            
+            <UserProfiles>
+                ${JSON.stringify(userProfiles)}
+            </UserProfiles>
+
+            <ExistingSuggestedTopics>
+                ${JSON.stringify(existingSuggestedTopics)}
+            </ExistingSuggestedTopics>
+
+            <TranscriptOfCurrentConversation>
+                ${transcript}
+            </TranscriptOfCurrentConversation>
 
             Please:
             1. Analyze the transcript to understand the current state of the conversation.
