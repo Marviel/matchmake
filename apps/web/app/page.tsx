@@ -48,7 +48,7 @@ My work is a significant part of my life, which might be challenging for some pa
 I'm on the shorter side for a man.
 
 If this resonates with you, I'd love to connect!        `),
-      interests: "Hiking, photography, trying new restaurants",
+      interests: "Writing, photography, trying new restaurants",
       badges: [
         { text: "No kids", icon: null },
         { text: "Sometimes drinks", icon: Wine }
