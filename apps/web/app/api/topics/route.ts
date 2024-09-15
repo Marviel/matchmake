@@ -47,6 +47,9 @@ async function generateTopics(
 ): Promise<OutputType> {
     try {
         const prompt = `
+            <CRITICAL>
+                REMEMBER: the topics should be short, concise, and under 10 words.
+            </CRITICAL>
             You are an insightful and empathetic matchmaker. Your task is to analyze two dating profiles and generate personalized conversation tips for their first date. The output should be in JSON format, providing tailored advice for each person.
             Given the two dating User Profiles and already suggested topics: ${JSON.stringify(userProfiles)},  Already Suggested Topics: ${JSON.stringify(alreadySuggestedTopics)}, please
             
@@ -61,6 +64,10 @@ async function generateTopics(
             
             Return the result as a JSON object with a "topics" array containing objects with "type", "title", and "content" properties.
 
+            <CRITICAL>
+                REMEMBER: the topics should be short, concise, and under 10 words.
+            </CRITICAL>
+
             <TypeExplanations>
                 <TypeExplanation type="find-out">
                     This is meant for things which are appealing to one person, but where it's not clear if the other person will find it appealing.
@@ -73,6 +80,9 @@ async function generateTopics(
                 </TypeExplanation>
             </TypeExplanations>
 
+            <CRITICAL>
+                REMEMBER: the topics should be short, concise, and under 10 words.
+            </CRITICAL>
         `;
 
         const response = await openai.beta.chat.completions.parse({
