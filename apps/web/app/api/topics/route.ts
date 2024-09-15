@@ -68,6 +68,10 @@ async function generateTopics(
                 REMEMBER: the topics should be short, concise, and under 10 words.
             </CRITICAL>
 
+            <CRITICAL>
+                Order the topics appropriately on the order of priority.
+            </CRITICAL>
+
             <TypeExplanations>
                 <TypeExplanation type="find-out">
                     This is meant for things which are appealing to one person, but where it's not clear if the other person will find it appealing.
