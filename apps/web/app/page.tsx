@@ -1,14 +1,22 @@
 "use client";
-import React, { useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   Cigarette,
   Wine,
 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
+import LivePage from './LivePage';
 import MainApp from './MainPage';
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const isLive = searchParams.get('live') === '1';
+
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [showTextareas, setShowTextareas] = useState(false);
   const [profileContent, setProfileContent] = useState({
@@ -109,16 +117,30 @@ export default function Page() {
 
   const [topics, setTopics] = useState<{ title: string, content: string, type: 'shared-go-deeper' | 'find-out' | 'navigate-tension' }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [transcript, setTranscript] = useState('');
 
-  const fetchTopics = async () => {
+  const fetchTopics = async (useTranscript = false) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/topics', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const endpoint = useTranscript ? '/api/topics/suggest_from_transcript' : '/api/topics';
+      const body = useTranscript
+        ? {
+          transcript,
+          userProfiles: [
+            {
+              ...profileContent.them,
+              interests: profileContent.them.interests,
+              badges: profileContent.them.badges
+            },
+            {
+              ...profileContent.me,
+              interests: profileContent.me.interests,
+              badges: profileContent.me.badges
+            }
+          ],
+          existingSuggestedTopics: topics,
+        }
+        : {
           userProfiles: [
             {
               ...profileContent.them,
@@ -132,7 +154,14 @@ export default function Page() {
             }
           ],
           alreadySuggestedTopics: topics,
-        }),
+        };
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -147,6 +176,22 @@ export default function Page() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+
+    if (isLive && transcript) {
+      intervalId = setInterval(() => {
+        fetchTopics(true);
+      }, 5000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isLive, transcript]);
 
   const handleAnalyze = () => {
     setShowAnalysis(true);
@@ -178,6 +223,21 @@ export default function Page() {
       }
     }));
   };
+
+  const handleTranscriptUpdate = (newTranscript: string) => {
+    setTranscript(newTranscript);
+  };
+
+  if (isLive) {
+    return (
+      <LivePage
+        profileContent={profileContent}
+        topics={topics}
+        isLoading={isLoading}
+        onTranscriptUpdate={handleTranscriptUpdate}
+      />
+    );
+  }
 
   return (
     <MainApp
