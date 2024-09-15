@@ -6,7 +6,8 @@ import React, {
     useState,
 } from 'react';
 
-import { Heart } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import RecordButton from './components/RecordButton';
 import TopicCard from './components/TopicCard';
@@ -21,7 +22,7 @@ interface LivePageProps {
 }
 
 export default function LivePage({ profileContent, topics, isLoading, onTranscriptUpdate }: LivePageProps) {
-
+    const router = useRouter();
     const [result, setResult] = useState<string>('');
     const [isListening, setIsListening] = useState<boolean>(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -119,8 +120,20 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
         }
     };
 
+    const handleBack = () => {
+        router.push('/'); // This will remove all query parameters
+    };
+
     return (
-        <div className="container mx-auto p-4 text-black">
+        <div className="container mx-auto p-4 text-black flex flex-col items-center">
+            <div className="w-full mb-4">
+                <button
+                    onClick={handleBack}
+                    className="px-4 py-2 bg-gray-600 text-white rounded-full text-lg font-semibold hover:bg-gray-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center"
+                >
+                    <ArrowLeft className="mr-2" size={20} /> Back
+                </button>
+            </div>
             <div className="flex flex-col items-center mb-8">
                 <div className="w-40 h-40 flex items-center justify-center">
                     <RecordButton isRecording={isListening} onClick={isListening ? stopListening : startListening} />
@@ -130,14 +143,14 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
                 </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-6">
+                {/* <div className="space-y-6">
                     <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6">
                         <h2 className="text-2xl font-bold mb-4">Transcript</h2>
                         <p className="whitespace-pre-wrap">{result}</p>
                     </div>
-                </div>
+                </div> */}
                 <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-4">Suggested Topics:</h3>
+                    <h3 className="text-xl font-bold mb-4 text-center">Suggested Topics:</h3>
                     {filteredTopics.length > 0 ? (
                         <TopicCard topic={filteredTopics[0]} onSwipe={handleSwipe} />
                     ) : (
@@ -150,13 +163,13 @@ export default function LivePage({ profileContent, topics, isLoading, onTranscri
                             <p className="text-lg text-gray-600">Loading more topics...</p>
                         </div>
                     )}
-                    <button
-                        onClick={() => {/* Add functionality to generate new topics */ }}
+                    {/* <button
+                        onClick={() => {}}
                         className="w-full px-6 py-3 bg-red-600 text-white rounded-full text-lg font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
                         disabled={isLoading}
                     >
                         <Heart className="mr-2" size={20} /> {isLoading ? 'Loading...' : 'Generate New Topics'}
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
