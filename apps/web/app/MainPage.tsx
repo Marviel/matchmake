@@ -176,7 +176,7 @@ export default function MainApp({
               <ProfileCard
                 profile={profileContent.them}
                 tags={{
-                  interests: "Hiking, photography, trying new restaurants",
+                  interests: "Writing, photography, trying new restaurants",
                   badges: [
                     { text: "No kids", icon: null },
                     { text: "Sometimes drinks", icon: Wine }
@@ -194,12 +194,12 @@ export default function MainApp({
                   ]
                 }}
               />
-              <button
-                onClick={handleNewProfiles}
-                className="w-full px-6 py-3 bg-gray-600 text-white rounded-full text-lg font-semibold hover:bg-gray-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
-              >
-                Analyze new profiles
-              </button>
+                <button
+                  onClick={handleNewProfiles}
+                  className="px-6 py-3 bg-black text-white rounded-full text-lg font-semibold hover:bg-gray-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex justify-center m-auto"
+                >
+                  Analyze new profiles
+                </button>
             </>
           )}
         </div>
@@ -211,8 +211,14 @@ export default function MainApp({
             <Mic className="mr-2" size={20} /> Go Live
           </button>
           {!showAnalysis ? (
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center">
-              <Users size={48} className="mx-auto mb-4" />
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={48}
+                height={48}
+                className="m-auto	"
+              />
               <p className="text-xl text-black">I'll analyze the things you share and things you need to discuss</p>
             </div>
           ) : isLoading ? (
@@ -226,7 +232,7 @@ export default function MainApp({
           )}
           <button
             onClick={handleAnalyze}
-            className="w-full px-6 py-3 bg-red-600 text-white rounded-full text-lg font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+            className="w-full px-6 py-3 bg-green-500 text-white rounded-full text-lg font-semibold hover:bg-red-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
             disabled={isLoading}
           >
             <Heart className="mr-2" size={20} /> {isLoading ? 'Loading...' : 'Give ideas to talk about'}
