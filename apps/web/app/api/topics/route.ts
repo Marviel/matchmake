@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
+import { zodResponseFormat } from 'openai/helpers/zod.mjs';
 import { z } from 'zod';
 
 // Define the input schema
@@ -67,22 +68,21 @@ async function generateTopics(
             </TypeExplanations>
         `;
 
-        const response = await openai.chat.completions.create({
+        const response = await openai.beta.chat.completions.parse({
             model: "gpt-4o",
             messages: [
                 { role: "system", content: "You are a helpful assistant that generates conversation topics for dates." },
                 { role: "user", content: prompt }
             ],
-            response_format: { type: "json_object" },
+            response_format: zodResponseFormat(OutputSchema, 'topics'),
         });
 
-        const generatedContent = response.choices[0]?.message.content;
+        const generatedContent = response.choices[0]?.message.parsed;
         if (!generatedContent) {
             throw new Error('No content generated');
         }
 
-        const parsedContent = JSON.parse(generatedContent);
-        return OutputSchema.parse(parsedContent);
+        return generatedContent;
     }
     catch (error) {
         console.error('Error generating topics:', error);
