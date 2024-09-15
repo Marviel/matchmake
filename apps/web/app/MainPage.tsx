@@ -9,16 +9,19 @@ import {
   Cigarette,
   Coffee,
   Heart,
+  Mic,
   Users,
   Wine,
 } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import TopicCard from './components/TopicCard';
 
 // Add this new component for the popup
 const ProfilePopup = ({ profile, onClose }: { profile: any; onClose: () => void }) => {
   const popupRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -109,7 +112,7 @@ interface MainAppProps {
     them: { name: string; avatar: string; body: string; interests: string; badges: { text: string; icon: any }[] };
     me: { name: string; avatar: string; body: string; interests: string; badges: { text: string; icon: any }[] };
   };
-  topics: { title: string; content: string; type: 'shared-go-deeper' | 'find-out' | 'navigate-tension' }[];
+  topics: { title: string; content: string; type: 'shared-go-deeper' | 'find-out' | 'navigate-tension'; origin?: 'live' }[];
   isLoading: boolean;
   handleAnalyze: () => void;
   handleNewProfiles: () => void;
@@ -128,8 +131,13 @@ export default function MainApp({
   handleNewProfiles,
   handleSaveProfiles,
   handleProfileChange,
-  handleBadgeChange
 }: MainAppProps) {
+  const router = useRouter();
+
+  const handleGoLive = () => {
+    router.push('?live=1');
+  };
+
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -196,6 +204,12 @@ export default function MainApp({
           )}
         </div>
         <div className="space-y-4">
+          <button
+            onClick={handleGoLive}
+            className="w-full px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center mb-4"
+          >
+            <Mic className="mr-2" size={20} /> Go Live
+          </button>
           {!showAnalysis ? (
             <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6 text-center">
               <Users size={48} className="mx-auto mb-4" />
