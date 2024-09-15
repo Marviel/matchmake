@@ -1,8 +1,8 @@
 'use client'
 
 import {
-  useEffect,
-  useState,
+    useEffect,
+    useState,
 } from 'react';
 
 import AudioRecorder from '../components/AudioRecorder';
@@ -34,7 +34,7 @@ export default function CardsPage() {
         setCards([...cards, newCard])
     }
 
-    const handleAudioTranscription = (transcript) => {
+    const handleAudioTranscription = (transcript: any) => {
         // TODO: Send transcript to API for analysis
         // For now, we'll just show a notification randomly
         if (Math.random() > 0.8) {
