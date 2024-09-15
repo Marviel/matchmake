@@ -190,7 +190,7 @@ export default function Component() {
     },
     me: {
       name: "Tati",
-      avatar: "/tati.jpeg",
+      avatar: "/tati.jpg",
       body: `
       🌈 Tati's Technicolor Dream Profile 🌈
 
