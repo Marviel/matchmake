@@ -47,12 +47,18 @@ async function generateTopics(
 ): Promise<OutputType> {
     try {
         const prompt = `
-            Generate 3 new conversation topics for a date based on the following user profiles and already suggested topics.
-            User Profiles: ${JSON.stringify(userProfiles)}
-            Already Suggested Topics: ${JSON.stringify(alreadySuggestedTopics)}
+            You are an insightful and empathetic matchmaker. Your task is to analyze two dating profiles and generate personalized conversation tips for their first date. The output should be in JSON format, providing tailored advice for each person.
+            Given the two dating User Profiles and already suggested topics: ${JSON.stringify(userProfiles)},  Already Suggested Topics: ${JSON.stringify(alreadySuggestedTopics)}, please
             
-            Each topic should have a type of either "find-out", "shared-go-deeper", or "navigate-tension".
+            Identify shared interests, values, and goals.
+            Recognize unique aspects of each person that their date might want to know more about.
+            
+            Generate a small number of "FindOut" topics: Areas where they need more information about their date, and a small number of "GoDeep" topics: Shared passions, interests, or values they can explore in depth, and a small number of “navigate-tension” topics: differences that users can be aware of. 
+            
+            Make sure the topics are concise and short, ideally just under 10 words. 
+            
             Also, include a catchy title for each topic.
+            
             Return the result as a JSON object with a "topics" array containing objects with "type", "title", and "content" properties.
 
             <TypeExplanations>
@@ -66,6 +72,7 @@ async function generateTopics(
                     The topic is about exploring possible tensions or conflict between the user's profiles.
                 </TypeExplanation>
             </TypeExplanations>
+
         `;
 
         const response = await openai.beta.chat.completions.parse({
